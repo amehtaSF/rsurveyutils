@@ -1,14 +1,23 @@
 Package: myutils
 Type: Package
-Title: What the Package Does (Title Case)
+Title: General preprocessing and utility functions
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Ashish Mehta
+Maintainer: Ashish Mehta <ashm@stanford.edu>
+Description: My own personal useful functions.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+RoxygenNote: 7.1.1
+Imports: 
+    tidyr,
+    dplyr,
+    purrr,
+    stringr,
+    tibble,
+    rlang,
+    magrittr,
+    tidyselect

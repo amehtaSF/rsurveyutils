@@ -1,5 +1,3 @@
-^renv$
-^renv\.lock$
 
 ^.*\.Rproj$         # Designates the directory as an RStudio Project
 ^\.Rproj\.user$     # Used by RStudio for temporary files
@@ -11,3 +9,9 @@
 ^pkgdown$           # Resources used for the package website
 ^_pkgdown\.yml$     # Configuration info for the package website
 ^\.github$          # Contributing guidelines, CoC, issue templates, etc.
+
+^renv$
+^renv\.lock$
+
+^LICENSE\.md$
+^myutils\.Rproj$
