@@ -1,10 +1,10 @@
 
-# myutils
+# rsurveyutils
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of myutils is to provide basic functionality for preprocessing data.
+The goal of rsurveyutils is to provide basic functionality for preprocessing data.
 
 ## Installation
 
