@@ -14,8 +14,8 @@ codebook_renamer <- function(df, names_from, names_to){
   if(length(names_from) != length(names_to)){stop(paste("names_from and names_to lengths must match"))}
   codebook_data_match_idx <- names_from %in% names(df)
   if(sum(codebook_data_match_idx) < length(codebook_data_match_idx)){
-    msg <- paste("Warning:", sum(!codebook_data_match_idx), "item(s) found in names_from not found in df. \n",
-                 paste(names_from[!codebook_data_match_idx], collapse=" "))
+    msg <- paste("Warning:", sum(!codebook_data_match_idx), "item(s) found in names_from not found in df columns. \n",
+                 paste(names_from[!codebook_data_match_idx], collapse=" "), "\n")
     warning(msg)
   }
   data_codebook_match_idx <- names(df) %in% names_from
