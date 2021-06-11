@@ -1,4 +1,4 @@
-Package: myutils
+Package: rsurveyutils
 Type: Package
 Title: General preprocessing and utility functions
 Version: 0.1.0

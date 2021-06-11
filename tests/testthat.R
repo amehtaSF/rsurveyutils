@@ -1,4 +1,4 @@
 library(testthat)
-library(myutils)
+library(rsurveyutils)
 
-test_check("myutils")
+test_check("rsurveyutils")
