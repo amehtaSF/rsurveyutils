@@ -2,6 +2,7 @@
 
 export(codebook_recoder)
 export(codebook_renamer)
+export(scale)
 export(tally_scale)
 importFrom(magrittr,"%>%")
 importFrom(rlang,"!!")
