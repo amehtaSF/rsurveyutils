@@ -41,9 +41,10 @@ tally_scale <- function(df,var_regex, new_var_name=NULL, join_function=dplyr::fu
     dplyr::mutate(!!"tmp_row_id" := 1:dplyr::n()) # add a temporary id column
   df_tally <- df %>%
     dplyr::select(.data$tmp_row_id, dplyr::one_of(cols_to_tally))  # select columns to aggregate
-  if(any(purrr::map_dfc(df_tally, ~grepl("[^0-9.]", .x)))){stop("Non-numeric values found in columns")}
+  df_tally <- tryCatch({df_tally %>% dplyr::mutate_all(as.numeric)}, # convert to numeric data type
+                       warning = function(w) stop("Non-numeric values found in columns"),
+                       error = function(e) e)
   df_tally <- df_tally %>%
-    dplyr::mutate_all(as.numeric) %>% # convert to numeric data type
     tidyr::pivot_longer(-.data$tmp_row_id) %>% # convert to long format
     dplyr::group_by(.data$tmp_row_id) %>% # group by row
     dplyr::summarize("{new_var_name}" := tally_function(.data$value, na.rm=na.rm)) # aggregate according to tally_function
