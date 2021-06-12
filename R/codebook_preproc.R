@@ -61,7 +61,7 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
       val_to =  as.character(values_to)
     )
   },
-  error=function(e){d})
+  error=function(e){e})
 
 
   col_names <- names(df)
