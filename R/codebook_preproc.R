@@ -75,7 +75,7 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
     if(!is.null(FUN)){
       safe_func <- function(x, ...) {
         tryCatch(expr=FUN(x, ...),
-                 warning=function(w) {warning("Unable to apply FUN to all columns"); return(x)},
+                 warning=function(w) {warning("Unable to apply FUN column"); return(x)},
                  error=function(e) e)
       }
       df <- df %>%

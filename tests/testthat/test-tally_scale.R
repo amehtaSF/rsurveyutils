@@ -1,19 +1,19 @@
 
-df_in <- dplyr::tribble(
-  ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2,
-  1,             2,             3,             3,
-  2,             3,             2,             3,
-  3,             2,             3,             3
-)
-
-df_out <- dplyr::tribble(
-  ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2, ~scale, ~scale_sub1, ~scale_sub2,
-  1,             2,             3,             3,             9,      3,           6,
-  2,             3,             2,             3,             10,     5,           5,
-  3,             2,             3,             3,             11,     5,           6
-)
-
 test_that("Basic tally with join works", {
+  df_in <- dplyr::tribble(
+    ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2,
+    1,             2,             3,             3,
+    2,             3,             2,             3,
+    3,             2,             3,             3
+  )
+
+  df_out <- dplyr::tribble(
+    ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2, ~scale, ~scale_sub1, ~scale_sub2,
+    1,             2,             3,             3,             9,      3,           6,
+    2,             3,             2,             3,             10,     5,           5,
+    3,             2,             3,             3,             11,     5,           6
+  )
+
   df_result <- df_in %>%
     tally_scale("scale") %>%
     tally_scale("scale_sub1") %>%
@@ -21,20 +21,46 @@ test_that("Basic tally with join works", {
   expect_identical(df_result, df_out)
 })
 
-df_in <- dplyr::tribble(
-  ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2,
-  1,             2,             3,             3,
-  2,             3,             2,             3,
-  3,             2,             3,             3
-)
-df_out <- dplyr::tribble(
-  ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2, ~scale_total, ~scale_sub1_total, ~scale_sub2_total,
-  1,             2,             3,             3,             9,            3,                 6,
-  2,             3,             2,             3,             10,           5,                 5,
-  3,             2,             3,             3,             11,           5,                 6
-)
+test_that("Basic tally with join works with NAs", {
+  df_in <- dplyr::tribble(
+    ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2,
+    NA,             2,             3,             3,
+    2,             3,             2,             3,
+    3,             2,             3,             3
+  )
+
+  df_out <- dplyr::tribble(
+    ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2, ~scale, ~scale_sub1, ~scale_sub2,
+    NA,            2,             3,             3,             NA,     NA,         6,
+    2,             3,             2,             3,             10,     5,          5,
+    3,             2,             3,             3,             11,     5,          6
+  )
+
+  df_result <- df_in %>%
+    tally_scale("scale") %>%
+    tally_scale("scale_sub1") %>%
+    tally_scale("scale_sub2")
+  expect_identical(df_result, df_out)
+})
+
+
+
 
 test_that("Basic tally with join and rename works", {
+
+  df_in <- dplyr::tribble(
+    ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2,
+    1,             2,             3,             3,
+    2,             3,             2,             3,
+    3,             2,             3,             3
+  )
+  df_out <- dplyr::tribble(
+    ~scale_sub1_1, ~scale_sub1_2, ~scale_sub2_1, ~scale_sub2_2, ~scale_total, ~scale_sub1_total, ~scale_sub2_total,
+    1,             2,             3,             3,             9,            3,                 6,
+    2,             3,             2,             3,             10,           5,                 5,
+    3,             2,             3,             3,             11,           5,                 6
+  )
+
   df_result <- df_in %>%
     tally_scale("scale", "scale_total") %>%
     tally_scale("scale_sub1", "scale_sub1_total") %>%
