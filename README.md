@@ -23,3 +23,6 @@ library(rsurveyutils)
 ## basic example code
 ```
 
+## Todo
+* codebook_recoder doesn't work on nature study 2b project when installed from github, but works from globalenv. Particularly, the trycatch in as.numeric conversion
+

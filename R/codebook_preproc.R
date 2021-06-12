@@ -75,8 +75,8 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
     if(!is.null(FUN)){
       safe_func <- function(x, ...) {
         tryCatch(expr=FUN(x, ...),
-                 warning=function(w) x,
-                 error=function(e) x)
+                 warning=function(w) {warning("Unable to apply FUN to all columns"); return(x)},
+                 error=function(e) e)
       }
       df <- df %>%
         dplyr::mutate_at(dplyr::vars(dplyr::any_of(current_col_names)), safe_func)
