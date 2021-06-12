@@ -41,7 +41,7 @@ codebook_renamer <- function(df, names_from, names_to){
 #' @param var_regex Vector of regex patterns describing columns to recode values.
 #' @param values_from Vector of possible values to be recoded.
 #' @param values_to Vector of values to recode values_from into.
-#' @param mutate_fun Function to to apply to column after recoding. Set to NULL if no function is desired.
+#' @param FUN Function to to apply to column after recoding. Set to NULL if no function is desired.
 #'
 #' @return A dataframe with recoded values.
 #' @importFrom rlang .data
@@ -63,8 +63,8 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
 
   for(current_regex in unique(key$var_rgx)){
     level_key <- key %>%
-      dplyr::filter(var_rgx == current_regex) %>%
-      dplyr::select(val_from, val_to) %>%
+      dplyr::filter(.data$var_rgx == current_regex) %>%
+      dplyr::select(.data$val_from, .data$val_to) %>%
       tibble::deframe()
     current_col_idx <- stringr::str_detect(col_names, current_regex)
     current_col_names <- col_names[current_col_idx]

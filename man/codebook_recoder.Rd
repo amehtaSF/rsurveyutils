@@ -15,7 +15,7 @@ codebook_recoder(df, var_regex, values_from, values_to, FUN = as.numeric)
 
 \item{values_to}{Vector of values to recode values_from into.}
 
-\item{mutate_fun}{Function to to apply to column after recoding. Set to NULL if no function is desired.}
+\item{FUN}{Function to to apply to column after recoding. Set to NULL if no function is desired.}
 }
 \value{
 A dataframe with recoded values.
