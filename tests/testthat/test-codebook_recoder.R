@@ -29,3 +29,8 @@ test_that("Basic recoding works", {
                      values_to=df_codebook$values_to)
   expect_identical(df_recoded, df_output)
 })
+
+# TODO: add more tests
+
+# test if vector lengths differ
+# look into why nature project wasn't working and test taht

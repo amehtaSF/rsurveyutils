@@ -50,15 +50,20 @@ codebook_renamer <- function(df, names_from, names_to){
 #'
 #' @examples
 codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numeric){
-  if(length(var_regex) != length(values_from)){stop(paste("var_regex and values_from lengths must match"))}
-  if(length(var_regex) != length(values_to)){stop(paste("var_regex and values_to lengths must match"))}
-  if(length(values_from) != length(values_to)){stop(paste("values_from and values_to lengths must match"))}
+  # if(length(var_regex) != length(values_from)){stop(paste("var_regex and values_from lengths must match"))}
+  # if(length(var_regex) != length(values_to)){stop(paste("var_regex and values_to lengths must match"))}
+  # if(length(values_from) != length(values_to)){stop(paste("values_from and values_to lengths must match"))}
   clean_string <- function(x){stringr::str_replace_all(x, "\\\r|\\\n", "") %>% stringr::str_trim() %>% tolower}
-  key <- tibble::tibble(
-    var_rgx = var_regex,
-    val_from = clean_string(values_from),
-    val_to =  as.character(values_to)
-  )
+  key <-  tryCatch({
+    tibble::tibble(
+      var_rgx = var_regex,
+      val_from = clean_string(values_from),
+      val_to =  as.character(values_to)
+    )
+  },
+  error=function(e){d})
+
+
   col_names <- names(df)
 
   for(current_regex in unique(key$var_rgx)){
@@ -75,7 +80,7 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
     if(!is.null(FUN)){
       safe_func <- function(x, ...) {
         tryCatch(expr=FUN(x, ...),
-                 warning=function(w) {warning("Unable to apply FUN column"); return(x)},
+                 warning=function(w) {warning("Unable to apply FUN to column"); return(x)},
                  error=function(e) e)
       }
       df <- df %>%

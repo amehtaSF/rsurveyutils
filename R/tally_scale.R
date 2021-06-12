@@ -38,20 +38,20 @@ tally_scale <- function(df,var_regex, new_var_name=NULL, join_function=dplyr::fu
   cat(paste0(cols_to_tally))
   cat("\n\n")
   df <- df %>%
-    dplyr::mutate(!!"tmp_row_id" := 1:dplyr::n()) # add a temporary id column
+    dplyr::mutate(!!"..tmp_row_id.." := 1:nrow(df)) # add a temporary id column
   df_tally <- df %>%
-    dplyr::select(.data$tmp_row_id, dplyr::one_of(cols_to_tally))  # select columns to aggregate
+    dplyr::select(.data$..tmp_row_id.., dplyr::one_of(cols_to_tally))  # select columns to aggregate
   df_tally <- tryCatch({df_tally %>% dplyr::mutate_all(as.numeric)}, # convert to numeric data type
                        warning = function(w) stop("Non-numeric values found in columns"),
                        error = function(e) e)
   df_tally <- df_tally %>%
-    tidyr::pivot_longer(-.data$tmp_row_id) %>% # convert to long format
-    dplyr::group_by(.data$tmp_row_id) %>% # group by row
+    tidyr::pivot_longer(-.data$..tmp_row_id..) %>% # convert to long format
+    dplyr::group_by(.data$..tmp_row_id..) %>% # group by row
     dplyr::summarize("{new_var_name}" := tally_function(.data$value, na.rm=na.rm)) # aggregate according to tally_function
   if(!is.null(join_function)){
     df_tally <- df %>%
-      join_function(df_tally, by="tmp_row_id")  # join aggregated scores with original dataframe using join_function
+      join_function(df_tally, by="..tmp_row_id..")  # join aggregated scores with original dataframe using join_function
   }
-  df_tally <- df_tally %>% dplyr::select(-.data$tmp_row_id)
+  df_tally <- df_tally %>% dplyr::select(-.data$..tmp_row_id..)
   return(df_tally)
 }
