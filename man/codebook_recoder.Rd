@@ -4,13 +4,7 @@
 \alias{codebook_recoder}
 \title{Codebook Recoder}
 \usage{
-codebook_recoder(
-  df,
-  var_regex,
-  values_from,
-  values_to,
-  mutate_fun = as.numeric
-)
+codebook_recoder(df, var_regex, values_from, values_to, FUN = as.numeric)
 }
 \arguments{
 \item{df}{Dataframe of data to be recoded.}

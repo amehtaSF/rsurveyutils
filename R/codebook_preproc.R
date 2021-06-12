@@ -49,26 +49,38 @@ codebook_renamer <- function(df, names_from, names_to){
 #' @export
 #'
 #' @examples
-codebook_recoder <- function(df, var_regex, values_from, values_to, mutate_fun=as.numeric){
+codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numeric){
   if(length(var_regex) != length(values_from)){stop(paste("var_regex and values_from lengths must match"))}
   if(length(var_regex) != length(values_to)){stop(paste("var_regex and values_to lengths must match"))}
   if(length(values_from) != length(values_to)){stop(paste("values_from and values_to lengths must match"))}
+  clean_string <- function(x){stringr::str_replace_all(x, "\\\r|\\\n", "") %>% stringr::str_trim() %>% tolower}
+  key <- tibble::tibble(
+    var_rgx = var_regex,
+    val_from = clean_string(values_from),
+    val_to =  as.character(values_to)
+  )
+  col_names <- names(df)
 
-  preproc <- function(x){stringr::str_replace_all(x, "\\\r|\\\n", "") %>% tolower}
-
-  var_regex <- unique(var_regex)
-  values_from <- preproc(values_from)
-
-  for(current_regex in var_regex){
-    # current_vars <- str_extract(names(df), paste0(".*", current_regex,".*"))
-    level_key <- tibble::tibble(v_from = values_from[var_regex == current_regex],
-                                v_to = values_to[var_regex == current_regex]) %>%
+  for(current_regex in unique(key$var_rgx)){
+    level_key <- key %>%
+      dplyr::filter(var_rgx == current_regex) %>%
+      dplyr::select(val_from, val_to) %>%
       tibble::deframe()
-
+    current_col_idx <- stringr::str_detect(col_names, current_regex)
+    current_col_names <- col_names[current_col_idx]
     df <- df %>%
-      dplyr::mutate_at(dplyr::vars(tidyselect::matches(current_regex)), preproc) %>%
-      dplyr::mutate_at(dplyr::vars(tidyselect::matches(current_regex)), ~dplyr::recode(., !!!level_key))
-    if(!is.null(mutate_fun)){df <- df %>% dplyr::mutate_at(dplyr::vars(tidyselect::matches(current_regex)), mutate_fun)}
+      dplyr::mutate_at(dplyr::vars(dplyr::all_of(current_col_names)), clean_string)
+    df <- df %>%
+      dplyr::mutate_at(dplyr::vars(dplyr::all_of(current_col_names)), ~dplyr::recode(., !!!level_key))
+    if(!is.null(FUN)){
+      safe_func <- function(x, ...) {
+        tryCatch(expr=FUN(x, ...),
+                 warning=function(w) x,
+                 error=function(e) x)
+      }
+      df <- df %>%
+        dplyr::mutate_at(dplyr::vars(dplyr::any_of(current_col_names)), safe_func)
+    }
   }
   return(df)
 }
