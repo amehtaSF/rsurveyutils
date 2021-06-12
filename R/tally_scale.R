@@ -38,7 +38,7 @@ tally_scale <- function(df,var_regex, new_var_name=NULL, join_function=dplyr::fu
   cat(paste0(cols_to_tally))
   cat("\n\n")
   df <- df %>%
-    dplyr::mutate(!!"..tmp_row_id.." := 1:nrow(df)) # add a temporary id column
+    dplyr::mutate(.data$..tmp_row_id.. = 1:nrow(df)) # add a temporary id column
   df_tally <- df %>%
     dplyr::select(.data$..tmp_row_id.., dplyr::one_of(cols_to_tally))  # select columns to aggregate
   df_tally <- tryCatch({df_tally %>% dplyr::mutate_all(as.numeric)}, # convert to numeric data type
