@@ -19,17 +19,21 @@ scale <- function(...){
 
 #' to_sd_categories
 #'
-#' @param x Vector of numeric values
+#' Convert a numeric into a factor divided into three categories according to standard deviation (Below 1 SD, within 1 SD, greater than 1 SD).
+#' Useful for plotting interactions with continuous variables.
 #'
-#' @return Vector of 3 level factor by standard deviation. (Below 1 SD, within 1 SD, greater than 1 SD)
+#' @param x Vector of numeric values
+#' @param na.rm If true, remove NAs when calculating mean and SD. If NAs are present and na.rm is false, output will be all NAs
+#'
+#' @return Vector of 3 level factor by standard deviation.
 #' @export
 #'
 #' @examples
-#' myVec <- c(1,6,3,6,8,4,19,5,4,1,7,17,,9,5,5,11,4,3,4,11,4,2,2)
+#' myVec <- c(1,6,3,6,8,4,19,5,4,1,7,17,20,9,5,5,11,4,3,4,11,4,2,2)
 #' myCategoricalVec <- to_sd_categories(myVec)
 #'
-to_sd_categories <- function(x, na.rm){
-  case_when(
+to_sd_categories <- function(x, na.rm=FALSE){
+  dplyr::case_when(
     x < (mean(x, na.rm = na.rm) - sd(x, na.rm = na.rm)) ~ "< -1 SD",
     x > (mean(x, na.rm = na.rm) + sd(x, na.rm = na.rm)) ~ "> +1 SD",
     x <= (mean(x, na.rm = na.rm) + sd(x, na.rm = na.rm)) &
