@@ -1,3 +1,6 @@
+
+# TODO: Check for duplicate values in codebooks
+
 #' Codebook Renamer
 #'
 #' Rename the columns of a dataframe.
@@ -50,9 +53,6 @@ codebook_renamer <- function(df, names_from, names_to){
 #'
 #' @examples
 codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numeric){
-  # if(length(var_regex) != length(values_from)){stop(paste("var_regex and values_from lengths must match"))}
-  # if(length(var_regex) != length(values_to)){stop(paste("var_regex and values_to lengths must match"))}
-  # if(length(values_from) != length(values_to)){stop(paste("values_from and values_to lengths must match"))}
   clean_string <- function(x){stringr::str_replace_all(x, "\\\r|\\\n", "") %>% stringr::str_trim() %>% tolower}
   key <-  tryCatch({
     tibble::tibble(
@@ -61,9 +61,12 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
       val_to =  as.character(values_to)
     )
   },
+  warning=function(w){w},
   error=function(e){e})
 
-
+  if(any(is.na(key$var_rgx) | is.na(key$val_from) | is.na(key$val_to))){
+    warning("Removing incomplete items")
+  }
   col_names <- names(df)
 
   for(current_regex in unique(key$var_rgx)){
