@@ -41,8 +41,12 @@ tally_scale <- function(df,var_regex, new_var_name=NULL, join_function=dplyr::fu
   df_tally <- df %>%
     dplyr::select(.data$..tmp_row_id.., dplyr::one_of(cols_to_tally))  # select columns to aggregate
   df_tally <- tryCatch({df_tally %>% dplyr::mutate_all(as.numeric)}, # convert to numeric data type
-                       warning = function(w) stop("Non-numeric values found in columns"),
+                       warning = function(w) {
+                         if(stringr::str_detect(w, "NAs introduced by coercion")){simpleError(w)}
+                         else {warning(w)}
+                       },
                        error = function(e) e)
+  if(any(stringr::str_detect(class(df_tally), "[eE]rror"))) stop(paste(df_tally, "Do you have non-numeric values in the columns you are trying to tally?")) # error checking
   df_tally <- df_tally %>%
     tidyr::pivot_longer(-.data$..tmp_row_id..) %>% # convert to long format
     dplyr::group_by(.data$..tmp_row_id..) %>% # group by row

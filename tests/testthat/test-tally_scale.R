@@ -138,6 +138,7 @@ df_in <- dplyr::tribble(
 )
 
 test_that("Tally with invalid characters fails", {
+
   df_in %>%
     tally_scale("scale") %>%
     expect_error
