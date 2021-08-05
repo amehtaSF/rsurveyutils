@@ -13,7 +13,7 @@ scale(...)
 Vector of scaled values
 }
 \description{
-Wrapper for base scale function. Returns vector instead of list.
+Wrapper for base scale function. The base scale function returns a list type and this function returns a numeric type.
 }
 \examples{
 
