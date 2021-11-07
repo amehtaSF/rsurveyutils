@@ -20,4 +20,6 @@ Imports:
     tibble,
     rlang,
     magrittr,
-    tidyselect
+    tidyselect,
+    stats,
+    kableExtra
