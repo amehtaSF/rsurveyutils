@@ -4,12 +4,12 @@
 \alias{cor_matrix_kbl}
 \title{cor_matrix_kbl}
 \usage{
-cor_matrix_kbl(column_grid, dat, alpha = 0.05)
+cor_matrix_kbl(dat, column_grid, alpha = 0.05)
 }
 \arguments{
-\item{column_grid}{dataframe: first two columns contain the names of pairwise variables found in dat}
-
 \item{dat}{dataframe: data}
+
+\item{column_grid}{dataframe: first two columns contain the names of pairwise variables found in dat}
 
 \item{alpha}{numeric: p-value cutoff at which to start coloring cells}
 }
@@ -17,5 +17,14 @@ cor_matrix_kbl(column_grid, dat, alpha = 0.05)
 
 }
 \description{
-This function creates a kable correlation matrix with colored cells for
+This function creates a kable correlation matrix with colored cells indicating effect size and significance.
+Cells are darker green with increasing positive effect size and darker red with increasing negative effect size.
+Non-significant cells are not colored.
+}
+\examples{
+data(mtcars)
+size_columns <- c("hp", "wt")
+power_columns <- c("hp", "qsec")
+col_grid <- expand.grid(size_columns, power_columns)
+cor_matrix_kbl(mtcars, col_grid)
 }

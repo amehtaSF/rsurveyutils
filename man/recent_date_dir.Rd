@@ -17,3 +17,9 @@ string: path of most recent dated directory
 \description{
 recent_date_dir
 }
+\examples{
+
+
+myScaledVec <- recent_date_dir("data/raw")
+
+}
