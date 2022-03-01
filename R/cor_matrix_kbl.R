@@ -1,9 +1,11 @@
 #' cor_matrix_kbl
 #'
-#' This function creates a kable correlation matrix with colored cells for
+#' This function creates a kable correlation matrix with colored cells indicating effect size and significance.
+#' Cells are darker green with increasing positive effect size and darker red with increasing negative effect size.
+#' Non-significant cells are not colored.
 #'
-#' @param column_grid dataframe: first two columns contain the names of pairwise variables found in dat
 #' @param dat dataframe: data
+#' @param column_grid dataframe: first two columns contain the names of pairwise variables found in dat
 #' @param alpha numeric: p-value cutoff at which to start coloring cells
 #'
 #' @return
@@ -11,10 +13,15 @@
 #' @export
 #'
 #' @examples
+#' data(mtcars)
+#' size_columns <- c("hp", "wt")
+#' power_columns <- c("hp", "qsec")
+#' col_grid <- expand.grid(size_columns, power_columns)
+#' cor_matrix_kbl(mtcars, col_grid)
 
 
 
-cor_matrix_kbl <- function(column_grid, dat, alpha=.05){
+cor_matrix_kbl <- function(dat, column_grid, alpha=.05){
   cor_mat <- column_grid %>%
     dplyr::mutate(cor = purrr::map2_dbl(.[[1]], .[[2]], ~{
       stats::cor.test(dat[[.x]], dat[[.y]], use="complete.obs")$estimate
@@ -31,9 +38,9 @@ cor_matrix_kbl <- function(column_grid, dat, alpha=.05){
     tidyr::pivot_wider(id_cols = 1,
                        names_from = 2,
                        values_from = p)
+  colnames(cor_mat)[1] <- " "
   k <- cor_mat %>%
     dplyr::mutate_if(is.numeric, ~round(., digits = 3)) %>%
-    dplyr::rename(` `=Var1) %>%
     kableExtra::kbl() %>%
     kableExtra::kable_styling()
 
