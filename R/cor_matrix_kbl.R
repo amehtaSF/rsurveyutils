@@ -21,7 +21,10 @@
 
 
 
-cor_matrix_kbl <- function(dat, column_grid, alpha=.05){
+cor_matrix_kbl <- function(dat, column_grid=NULL, alpha=.05){
+  if(is.null(column_grid)){
+    column_grid <- expand.grid(names(dat), names(dat))
+  }
   cor_mat <- column_grid %>%
     dplyr::mutate(cor = purrr::map2_dbl(.[[1]], .[[2]], ~{
       stats::cor.test(dat[[.x]], dat[[.y]], use="complete.obs")$estimate
