@@ -78,8 +78,7 @@ cor_matrix_kbl <- function(dat, column_grid=NULL, alpha=.05, get_df=FALSE, round
     result <- df %>%
       dplyr::mutate_all(as.character)
     for(col_num in 2:ncol(df)){
-
-      for(row_num in 2:nrow(df)){
+      for(row_num in 1:nrow(df)){
         if(p_mat[row_num, col_num] < .001){
           result[row_num, col_num] <- paste(result[row_num, col_num], "***")
         } else if(p_mat[row_num, col_num] < .01){
