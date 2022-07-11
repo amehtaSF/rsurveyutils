@@ -4,7 +4,13 @@
 \alias{cor_matrix_kbl}
 \title{cor_matrix_kbl}
 \usage{
-cor_matrix_kbl(dat, column_grid, alpha = 0.05)
+cor_matrix_kbl(
+  dat,
+  column_grid = NULL,
+  alpha = 0.05,
+  get_df = FALSE,
+  round_digits = 3
+)
 }
 \arguments{
 \item{dat}{dataframe: data}
