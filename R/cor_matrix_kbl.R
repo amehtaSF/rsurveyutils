@@ -52,7 +52,7 @@ cor_matrix_kbl <- function(dat, column_grid=NULL, alpha=.05, get_df=FALSE, round
       kableExtra::kable_styling()
 
     for(colnum in 2:ncol(cor_mat)){
-      result <- k %>%
+      k <- k %>%
         kableExtra::column_spec(colnum,
                                 background = dplyr::case_when(
                                   p_mat[,colnum] < alpha ~ dplyr::case_when(
@@ -70,8 +70,7 @@ cor_matrix_kbl <- function(dat, column_grid=NULL, alpha=.05, get_df=FALSE, round
                                   TRUE ~ "#ffffff")
         )
     }
-
-    return(result)
+    result <- k
   } else {
     # Return the dataframe
 
@@ -88,7 +87,6 @@ cor_matrix_kbl <- function(dat, column_grid=NULL, alpha=.05, get_df=FALSE, round
         }
       }
     }
-    return(result)
   }
-
+  return(result)
 }
