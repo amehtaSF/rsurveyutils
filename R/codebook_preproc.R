@@ -83,7 +83,7 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
     if(!is.null(FUN)){
       safe_func <- function(x, ...) {
         tryCatch(expr=FUN(x, ...),
-                 warning=function(w) {warning(w)},
+                 warning=function(w) {warning(w); return(x)},
                  error=function(e) e)
       }
       df <- df %>%
