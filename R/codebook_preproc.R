@@ -66,6 +66,8 @@ codebook_recoder <- function(df, var_regex, values_from, values_to, FUN=as.numer
 
   if(any(is.na(key$var_rgx) | is.na(key$val_from) | is.na(key$val_to))){
     warning("Removing incomplete items")
+    key <- key %>%
+      filter(!any(is.na(key$var_rgx) & !is.na(key$val_from) & !is.na(key$val_to)))
   }
   col_names <- names(df)
 
